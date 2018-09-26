@@ -1,10 +1,6 @@
 My Name: Aditya Kumar
 
-Fun fact about me: I work on my Subaru WRX in my free time
-
-I have worked with: Farhan Rahman
-
-- Breadth-First Search (MAIN) and Depth-First search (Extra Credit)
+- Breadth-First Search (MAIN) and Depth-First search
 
 Heuristic used for A*: I used Manhattan distance for my heuristic.
 
@@ -16,6 +12,6 @@ DFS command line:   java boardDFS testFile.txt
 AStar command line: java boardAStar testFile.txt
 
 Warnings: 
-- A* is not working, I have my heuristic implemented. Partial credit for that would be great.
+- A* is not working, I have my heuristic implemented.
 - DFS is very slow on 3x3...
 - BFS works as it should, not fully optimized.

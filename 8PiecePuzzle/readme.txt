@@ -1,8 +1,8 @@
 My Name: Aditya Kumar
 
-- Breadth-First Search (MAIN) and Depth-First search
+Breadth-First Search (MAIN) and Depth-First search.
 
-Heuristic used for A*: I used Manhattan distance for my heuristic.
+I used Manhattan distance for my heuristic for A* search.
 
 Summary: The 4x4 is very much more complicated than the 3x3 test cases. Many more nodes were searched and were placed in the explored queue when the board size goes up.
 

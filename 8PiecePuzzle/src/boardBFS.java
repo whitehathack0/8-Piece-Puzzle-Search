@@ -2,9 +2,10 @@ import java.io.*;
 import java.util.*;
 
 public class boardBFS{
-	static int counter = 0;
-	static int counter2 = 0;
-	static int counter3 = 0;
+
+	static int counter = 0;  // Total number of search nodes added to the frontier queue
+	static int counter2 = 0; // Total number of search nodes selected from the frontier queue for expansion
+	static int counter3 = 0; // Maximum size of the search queue at any given time during the search
 
 	private static class node{
 		private static int[][] board;
@@ -21,31 +22,22 @@ public class boardBFS{
 		File fileIn = new File(args[0]);
 		FileReader filereader = new FileReader(fileIn);
 		BufferedReader reader = new BufferedReader(filereader);
-		StringBuffer stringbuffer = new StringBuffer();
 		String line;
-		
 
 		line = reader.readLine();
-		String stringarray[] = line.split(" ");
-		// for(int i=0;i<stringarray.length;i++)
-		// {
-		// 	System.out.print(stringarray[i]);
-		// }
-		int n = stringarray.length;
+		String stringArray[] = line.split(" ");
+		
+		int n = stringArray.length;
 		int[][] finalArray = new int[n][n];
 
-		for(int i=0;i<n;i++){
-			if(stringarray[i].equals(".")){finalArray[0][i] = 0;}
-				else finalArray[0][i] = Integer.parseInt(stringarray[i]);
-		}
-
-		for(int r=1;r<n;r++){
-				line = reader.readLine();
-				stringarray = line.split(" ");
+		//Set input of the user to the finalArray[][]
+		for(int r=0;r<n;r++){ 
+				stringArray = line.split(" ");
 			for(int c=0;c<n;c++){
-				if(stringarray[c].equals(".")){finalArray[r][c] = 0;}
-					else finalArray[r][c] = Integer.parseInt(stringarray[c]);
+				if(stringArray[c].equals(".")){finalArray[r][c] = 0;}
+					else finalArray[r][c] = Integer.parseInt(stringArray[c]);
 			}
+			line = reader.readLine();
 		}
 
 		String s = toString(finalArray)+"\n";
@@ -55,36 +47,8 @@ public class boardBFS{
 		System.out.println("Total number of search nodes selected from the frontier queue for expansion: "+counter2);
 		System.out.println("Maximum size of the search queue at any given time during the search: "+counter3);
 
-		// for(int i=0;i<finalArray.length;i++)
-		// {
-		// 	for(int j =0;j<finalArray.length;i++)
-		// 	{
-		// 		System.out.println(finalArray[i][j] + " ");
-		// 	}
-		// }
 
-		// for (int i = 0; i < goal.board.length; i++) {
-		//     for (int j = 0; j < goal.board[i].length; j++) {
-		//         System.out.print(goal.board[i][j] + " ");
-		//     }
-
-		//     System.out.println();
-		// }
-
-		// while((line=stringbuffer.readLine()) !=null){
-
-		// }
-
-		 int[][] testBoard = new int[3][3];
-		 testBoard[0][0] = 1;
-		 testBoard[0][1] = 2;
-		 testBoard[0][2] = 5;
-		 testBoard[1][0] = 3;
-		 testBoard[1][1] = 4;
-		 testBoard[1][2] = 0;
-		 testBoard[2][0] = 6;
-		 testBoard[2][1] = 7;
-		 testBoard[2][2] = 8;
+		// Sample inputs:
 
 		 int[][] matrix = {
 		  { 1, 2, 5 },
@@ -109,32 +73,21 @@ public class boardBFS{
 		  { 3, 4, 5 },
 		  { 0, 7, 6 }
 		};
-
-
-		//goUp(matrix,1,2);
-		//goDown(matrix,1,2);
-		//goLeft(matrix,1,2);
-		//goRight(matrix2,0,0);
-		// for (int i = 0; i < matrix2.length; i++) {
-		//     for (int j = 0; j < matrix2[i].length; j++) {
-		//         System.out.print(matrix2[i][j] + " ");
-		//     }
-
-		//     System.out.println();
-		// }
-
-		//System.out.println(isGoal(matrix4));
-		//System.out.println(goUp(matrix,1,2));
-
-		 //System.out.println(testBoard[1][1]);
-
 	}
 
+	/*  isRightValue() : Check if supplied board and positon is in the correct positon
+		Param:  Board: currrent board state
+				row: row positon within board
+				col" col poisiton within board
+	 */
 	public static boolean isRightValue(int[][] board, int row, int col){
 		int n = board.length;
-		return (((row*n)+col) == board[row][col]);
+		return(((row*n)+col) == board[row][col]);
 	}
 
+	/*  isGoal() : Check if supplied board is in goal state
+		Param:  Board: currrent board state
+	 */
 	public static boolean isGoal(int[][] board){
 		int n = board.length;
 		for(int i=0;i<n;i++){
@@ -147,21 +100,31 @@ public class boardBFS{
 		return true;
 	}
 
-	public static int[][] goUp(int[][] board, int row, int col){
+
+	 /*  goUp() : Check if up move is possible, then return resulting board after move
+		Param:  Board: currrent board state
+				row: row positon within board where '0' is located
+				col" col positon within board where '0' is located
+	 */
+	public static int[][] goUp(int[][] board, int row, int col){ // swapping 0 with element above
 		int n = board.length;
 		int[][] newboard = new int[n][n];
 
-		for(int i=0;i<n;i++){
+		/* Copy over given board[][] state to newBoard[][] */
+		for(int i=0;i<n;i++){ 
 			for(int j=0;j<n;j++){
 				newboard[i][j] = board[i][j];
 			}
 		}
 
-		if(row-1<0){return null;}
+		/* Check if move is possible */
+		if(row-1<0){
+			return null;
+		}
 		else{
-			int val = newboard[row-1][col];
-			newboard[row][col] = val;
-			newboard[row-1][col] = 0;
+			int val = newboard[row-1][col]; //store value above current 0
+			newboard[row][col] = val; //change value of old position of 0 with temp val
+			newboard[row-1][col] = 0; //change value one higher with 0
 			
 			return newboard;
 		}
@@ -169,28 +132,35 @@ public class boardBFS{
 
 	}
 
-	public static int[][] goDown(int[][] board, int row, int col){
+	/*  goDown() : Check if down move is possible, then return resulting board after move
+		Param:  Board: currrent board state
+				row: row positon within board where '0' is located
+				col" col positon within board where '0' is located
+	 */
+	public static int[][] goDown(int[][] board, int row, int col){  // swapping 0 with element below
 		int n = board.length;
 		int[][] newboard = new int[n][n];
 
-		for(int i=0;i<n;i++){
+		for(int i=0;i<n;i++){ 
 			for(int j=0;j<n;j++){
 				newboard[i][j] = board[i][j];
 			}
 		}
-
-		
 		if(row+1>=n){return null;}
 		else{
 			int val = newboard[row+1][col];
 			newboard[row][col] = val;
 			newboard[row+1][col] = 0;
-			
 			return newboard;
 		}
 	}
 
-	public static int[][] goLeft(int[][] board, int row, int col){
+	/*  goLeft() : Check if up move is possible, then return resulting board after move
+		Param:  Board: currrent board state
+				row: row positon within board where '0' is located
+				col" col positon within board where '0' is located
+	 */
+	public static int[][] goLeft(int[][] board, int row, int col){ // swapping 0 with element to the left
 		int n = board.length;
 		int[][] newboard = new int[n][n];
 
@@ -199,11 +169,9 @@ public class boardBFS{
 				newboard[i][j] = board[i][j];
 			}
 		}
-
-
 		if(col-1<0){return null;}
 		else{
-			int val = newboard[row][col-1];
+			int val = newboard[row][col-1]; //left
 			newboard[row][col] = val;
 			newboard[row][col-1] = 0;
 		
@@ -211,7 +179,12 @@ public class boardBFS{
 		}
 	}
 
-	public static int[][] goRight(int[][] board, int row, int col){
+	/*  goRight() : Check if up move is possible, then return resulting board after move
+		Param:  Board: currrent board state
+				row: row positon within board where '0' is located
+				col" col positon within board where '0' is located
+	 */
+	public static int[][] goRight(int[][] board, int row, int col){ // swapping 0 with element to the right
 		int n = board.length;
 		int[][] newboard = new int[n][n];
 
@@ -220,10 +193,9 @@ public class boardBFS{
 				newboard[i][j] = board[i][j];
 			}
 		}
-
 		if(col+1>=n){return null;}
 		else{
-			int val = newboard[row][col+1];
+			int val = newboard[row][col+1]; //right
 			newboard[row][col] = val;
 			newboard[row][col+1] = 0;
 		
@@ -231,120 +203,107 @@ public class boardBFS{
 		}
 	}
 
-	public static String toString(int[][] arrayIn){
+	/*  toString() : Print out the int[][] in matrix format with length and width = length of input int[][]
+		Param:  arrayIn: board state
+	 */
+	public static String toString(int[][] board){
 		String out = "";
-		for(int i=0;i<arrayIn.length;i++){
-			for(int j=0;j<arrayIn.length;j++){
-				out = out+arrayIn[i][j] + " ";
+		for(int i=0;i<board.length;i++){
+			for(int j=0;j<board.length;j++){
+				out = out+board[i][j] + "  ";
 			}
 			out = out+"\n";
 		}
 		return out;
 	}
 
-	public static String bfs(int[][] a, String path){
-		// node a = new node(finalArray, null);
-		// bfs(a);
-		// a.board = 
-		Queue<int[][]> bq = new LinkedList<>();
-		Queue<String> pq = new LinkedList<>();
+
+
+	/*  bfs() : Perform BFS on given board and path taken so far
+		Param:  a: Current board state 
+				path: Current path of board
+	 */
+	public static String bfs(int[][] a, String path){  
+		Queue<int[][]> bq = new LinkedList<>(); //List that holds all boards
+		Queue<String> pq = new LinkedList<>(); //List that holds path
 		bq.add(a);
 		pq.add(path);
 		counter++;
 
-		int c = 0;
+		/* 
+			This whole while loop works on one board called board and adds possible moves to the queue
+			and works on each board in the bq queue until options are exhausted OR goal state is reached.
+		*/
 
-		while(!bq.isEmpty()){
-			int[][] board = bq.remove();
-			if(counter2>=100000){ System.out.println("no solution found (100k limit reached") ;break;}
-			String p = pq.remove();;
+		while(!bq.isEmpty()){ 
+			int[][] board = bq.remove(); //dequeue board
+			String p = pq.remove(); //dequeue path
+			/* Check if the board is the goal and then return it */
+			if(isGoal(board)){
+				return p;
+			}
+
+			if(counter2>=100000){
+				System.out.println("No solution found (100k board in queue) ");
+				break;
+			}
 			counter2++;
-			if(counter3<bq.size()){counter3=bq.size();}
-			//visited.add(temp);
-			//System.out.println(queue.size());
+			if(counter3<bq.size()){
+				counter3=bq.size();
+			}
 			
 			int inR=0;
 			int inC=0;
 
-			for(int i=0;i<board.length;i++){
+			//These nested for-loops finds the current positon of 0 in the board
+			for(int i=0;i<board.length;i++){ 
 				for(int j=0;j<board.length;j++){
-					if(board[i][j]==0){
+					if(board[i][j]==0){ 
 						inR = i;
 						inC = j;
 						break;
 					}
 				}
 			}
-
-			c++;			
-
-			// for(int i = 0; i < board.length; i++){
-			// 	for(int j = 0; j < board.length; j++){
-			// 		System.out.print(board[i][j] + " ");
-			// 	}
-			// 	System.out.println();
-			// }
-
-			if(isGoal(board)){
-				return p;
-			}
-			//create a int[][] and store goUp and chekc if null and then use tht var in the if; point is to not perform twice
 			
 
-			// for(int i = 0; i < board.length; i++){
-			// 	for(int j = 0; j < board.length; j++){
-			// 		System.out.print("u" + temp2[i][j] + " ");
-			// 	}
-			// 	System.out.println();
-			// }
+			/*  Here we are going to attempt to apply 
+				each directional move, up,down,left,right IF possible 
+			*/
+
 			String r="",d="",u="",l="";
+
+			/* 
+				1. Call each move
+				2. If the move is possible add the path 
+				   to string var for corresponding move.
+				3. Enqueue the board and path to the queue.
+				4. Increment counter
+			*/
+
 			int[][] temp2 = goUp(board, inR, inC);
-			if((temp2!=null)){
-				u = p+toString(temp2)+"\n";
-				//System.out.println("u");
-				//System.out.println(u);
-				//System.out.println(queue.size());
-			}
-			int[][] temp3 = goRight(board, inR, inC);
-			if(!(temp3==null)){
-				r = p+toString(temp3)+"\n";
-				//System.out.println("r");
-				//System.out.println(r);
+			if(temp2!=null){
+				u = p+toString(temp2)+"\n"; 
+				bq.add(temp2); pq.add(u); counter++;
 			}
 
-			// for(int i = 0; i < board.length; i++){
-			// 	for(int j = 0; j < board.length; j++){
-			// 		System.out.print("r" + temp3[i][j] + " ");
-			// 	}
-			// 	System.out.println();
-			// }
+			int[][] temp3 = goRight(board, inR, inC);
+			if(temp3!=null){
+				r = p+toString(temp3)+"\n";
+				bq.add(temp3); pq.add(r); counter++; 
+			}
 
 			int[][] temp4 = goLeft(board,inR, inC);
-			if(!(temp4==null)){
+			if(temp4!=null){
 				l = p+toString(temp4)+"\n";
-				//System.out.println("l");
-				//System.out.println(l);
+				bq.add(temp4); pq.add(l); counter++;
 
 			}
 			int[][] temp5 = goDown(board,inR, inC);
-			if(!(temp5==null)){
+			if(temp5!=null){
 				d = p+toString(temp5)+"\n";
-				//System.out.println("d");
-				//System.out.println(d);
+				bq.add(temp5); pq.add(d); counter++;
 			}
-
-			// for(int i = 0; i < board.length; i++){
-			// 	for(int j = 0; j < board.length; j++){
-			// 		System.out.print("bb" + board[i][j] + " ");
-			// 	}
-			// 	System.out.println();
-			// }
-
-
-			if(temp2 != null) { bq.add(temp2); pq.add(u); counter++; }
-			if(temp3 != null) { bq.add(temp3); pq.add(r); counter++; }
-			if(temp4 != null) { bq.add(temp4); pq.add(l); counter++; }
-			if(temp5 != null) { bq.add(temp5); pq.add(d); counter++; }
 			
 
 		}
@@ -353,6 +312,3 @@ public class boardBFS{
 
 
 }
-
-
-

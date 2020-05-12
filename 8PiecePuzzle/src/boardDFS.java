@@ -27,10 +27,6 @@ public class boardDFS{
 
 		line = reader.readLine();
 		String stringarray[] = line.split(" ");
-		// for(int i=0;i<stringarray.length;i++)
-		// {
-		// 	System.out.print(stringarray[i]);
-		// }
 		int n = stringarray.length;
 		int[][] finalArray = new int[n][n];
 
@@ -55,36 +51,6 @@ public class boardDFS{
 		System.out.println("Total number of search nodes selected from the frontier queue for expansion: "+counter2);
 		System.out.println("Maximum size of the search queue at any given time during the search: "+counter3);
 
-		// for(int i=0;i<finalArray.length;i++)
-		// {
-		// 	for(int j =0;j<finalArray.length;i++)
-		// 	{
-		// 		System.out.println(finalArray[i][j] + " ");
-		// 	}
-		// }
-
-		// for (int i = 0; i < goal.board.length; i++) {
-		//     for (int j = 0; j < goal.board[i].length; j++) {
-		//         System.out.print(goal.board[i][j] + " ");
-		//     }
-
-		//     System.out.println();
-		// }
-
-		// while((line=stringbuffer.readLine()) !=null){
-
-		// }
-
-		 int[][] testBoard = new int[3][3];
-		 testBoard[0][0] = 1;
-		 testBoard[0][1] = 2;
-		 testBoard[0][2] = 5;
-		 testBoard[1][0] = 3;
-		 testBoard[1][1] = 4;
-		 testBoard[1][2] = 0;
-		 testBoard[2][0] = 6;
-		 testBoard[2][1] = 7;
-		 testBoard[2][2] = 8;
 
 		 int[][] matrix = {
 		  { 1, 2, 5 },
@@ -109,24 +75,6 @@ public class boardDFS{
 		  { 3, 4, 5 },
 		  { 0, 7, 6 }
 		};
-
-
-		//goUp(matrix,1,2);
-		//goDown(matrix,1,2);
-		//goLeft(matrix,1,2);
-		//goRight(matrix2,0,0);
-		// for (int i = 0; i < matrix2.length; i++) {
-		//     for (int j = 0; j < matrix2[i].length; j++) {
-		//         System.out.print(matrix2[i][j] + " ");
-		//     }
-
-		//     System.out.println();
-		// }
-
-		//System.out.println(isGoal(matrix4));
-		//System.out.println(goUp(matrix,1,2));
-
-		 //System.out.println(testBoard[1][1]);
 
 	}
 
@@ -243,9 +191,6 @@ public class boardDFS{
 	}
 
 	public static String dfs(int[][] a, String path){
-		// node a = new node(finalArray, null);
-		// bfs(a);
-		// a.board = 
 		Stack<int[][]> bq = new Stack<>();
 		Stack<String> pq = new Stack<>();
 		bq.push(a);
@@ -260,8 +205,6 @@ public class boardDFS{
 			String p = pq.pop();;
 			counter2++;
 			if(counter3<bq.size()){counter3=bq.size();}
-			//visited.add(temp);
-			//System.out.println(queue.size());
 			
 			int inR=0;
 			int inC=0;
@@ -278,68 +221,29 @@ public class boardDFS{
 
 			c++;			
 
-			// for(int i = 0; i < board.length; i++){
-			// 	for(int j = 0; j < board.length; j++){
-			// 		System.out.print(board[i][j] + " ");
-			// 	}
-			// 	System.out.println();
-			// }
-
 			if(isGoal(board)){
 				return p;
 			}
-			//create a int[][] and store goUp and chekc if null and then use tht var in the if; point is to not perform twice
-			
-
-			// for(int i = 0; i < board.length; i++){
-			// 	for(int j = 0; j < board.length; j++){
-			// 		System.out.print("u" + temp2[i][j] + " ");
-			// 	}
-			// 	System.out.println();
-			// }
+		
 			String r="",d="",u="",l="";
 			int[][] temp2 = goUp(board, inR, inC);
 			if((temp2!=null)){
 				u = p+toString(temp2)+"\n";
-				//System.out.println("u");
-				//System.out.println(u);
-				//System.out.println(queue.size());
 			}
 			int[][] temp3 = goRight(board, inR, inC);
 			if(!(temp3==null)){
 				r = p+toString(temp3)+"\n";
-				//System.out.println("r");
-				//System.out.println(r);
 			}
 
-			// for(int i = 0; i < board.length; i++){
-			// 	for(int j = 0; j < board.length; j++){
-			// 		System.out.print("r" + temp3[i][j] + " ");
-			// 	}
-			// 	System.out.println();
-			// }
 
 			int[][] temp4 = goLeft(board,inR, inC);
 			if(!(temp4==null)){
 				l = p+toString(temp4)+"\n";
-				//System.out.println("l");
-				//System.out.println(l);
-
 			}
 			int[][] temp5 = goDown(board,inR, inC);
 			if(!(temp5==null)){
 				d = p+toString(temp5)+"\n";
-				//System.out.println("d");
-				//System.out.println(d);
 			}
-
-			// for(int i = 0; i < board.length; i++){
-			// 	for(int j = 0; j < board.length; j++){
-			// 		System.out.print("bb" + board[i][j] + " ");
-			// 	}
-			// 	System.out.println();
-			// }
-
 
 			if(temp3 != null) { bq.push(temp3); pq.push(r); counter++; }
 			if(temp4 != null) { bq.push(temp4); pq.push(l); counter++; }
@@ -353,6 +257,3 @@ public class boardDFS{
 
 
 }
-
-
-
